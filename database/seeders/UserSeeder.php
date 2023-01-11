@@ -15,7 +15,7 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        // Crear un usuario Administrador predeterminado
+        // Crear unos usuarios predeterminados
         User::create([
             "name" => "admin",
             "email" => "admin@example.com",
