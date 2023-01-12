@@ -41,7 +41,7 @@
                                 @empty
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
+                                            <div class="flex items-center justify-center dark:text-white">
                                                 No hay roles aún
                                             </div>
                                         </td>
