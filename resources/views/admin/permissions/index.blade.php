@@ -1,19 +1,34 @@
 <x-admin-layout>
     <div class="py-12 w-full">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100 text-center">
+            <div
+                class="flex items-center p-3.5 justify-center bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="flex-1  text-gray-900 dark:text-gray-100 text-center">
                     Permisos
+                </div>
+                <div class="flex-2">
+                    <a href="{{ route('admin.permissions.create') }}"
+                        class="px-5 py-2.5 relative rounded group font-medium text-white inline-block">
+                        <span
+                            class="absolute top-0 left-0 w-full h-full rounded opacity-50 filter blur-sm bg-gradient-to-br from-green-600 to-green-400"></span>
+                        <span
+                            class="h-full w-full inset-0 absolute mt-0.5 ml-0.5 bg-gradient-to-br filter group-active:opacity-0 rounded opacity-50 from-green-600 to-green-400"></span>
+                        <span
+                            class="absolute inset-0 w-full h-full transition-all duration-200 ease-out rounded shadow-xl bg-gradient-to-br filter group-active:opacity-0 group-hover:blur-sm from-green-600 to-green-400"></span>
+                        <span
+                            class="absolute inset-0 w-full h-full transition duration-200 ease-out rounded bg-gradient-to-br to-green-600 from-green-400"></span>
+                        <span class="relative">+</span>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="flex flex-col py-4 max-w-6xl mx-auto sm:px-6 lg:px-88">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                    <div class="shadow overflow-hidden border-b border-gray-200 dark:border-gray-800 sm:rounded-lg">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <tbody class="bg-white divide-y divide-gray-200  dark:bg-gray-800">
-                                @forelse ($permisos as $permiso)
+                    @forelse ($permisos as $permiso)
+                        <div class="shadow overflow-hidden border-b border-gray-200 dark:border-gray-800 sm:rounded-lg">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <tbody class="bg-white divide-y divide-gray-200  dark:bg-gray-800">
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center dark:text-white">
@@ -39,18 +54,11 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center justify-center dark:text-white">
-                                                No hay permisos aún
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+                    @endforelse
+                    </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+    </div>
 </x-admin-layout>
