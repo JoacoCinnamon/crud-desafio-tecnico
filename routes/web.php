@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,8 +31,10 @@ Route::middleware('auth')->group(function () {
 });
 
 // UnauthorizedException ahora tira 404 y no 403 
-Route::middleware(['role:admin'])->group(function () {
-    Route::get('/admin', fn () => view('admin.index'))->name('admin.index');
+Route::middleware(['role:admin'])->name('admin.')->prefix('admin')->group(function () {
+    Route::get('/', fn () => view('admin.index'))->name('index');
+    Route::resource('/roles', RoleController::class);
+    Route::resource('/permissions', PermissionController::class);
 });
 
 require __DIR__ . '/auth.php';
