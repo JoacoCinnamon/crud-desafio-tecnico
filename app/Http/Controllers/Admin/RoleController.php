@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
@@ -14,7 +15,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view('admin.roles.index');
+        $roles = Role::whereNotIn('name', ['admin'])->get();
+        return view('admin.roles.index', compact('roles'));
     }
 
     /**
@@ -44,9 +46,13 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $user = $request->user();
+
+        if (!$user->isAdmin() && $id == 1) {
+            abort(403);
+        }
     }
 
     /**
@@ -55,9 +61,13 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        $user = $request->user();
+
+        if (!$user->isAdmin() && $id == 1) {
+            abort(403);
+        }
     }
 
     /**
@@ -69,7 +79,11 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = $request->user();
+
+        if (!$user->isAdmin() && $id == 1) {
+            abort(403);
+        }
     }
 
     /**
@@ -78,8 +92,12 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $user = $request->user();
+
+        if (!$user->isAdmin() && $id == 1) {
+            abort(403);
+        }
     }
 }
