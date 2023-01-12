@@ -22,15 +22,15 @@
             <nav :class="{ 'block': open, 'hidden': !open }"
                 class="flex-grow px-4 pb-4 md:block md:pb-0 md:overflow-y-auto">
 
-                <x-sidebar-nav-link href="{{ route('admin.index') }}">
+                <x-sidebar-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.index')">
                     Inicio
                 </x-sidebar-nav-link>
 
-                <x-sidebar-nav-link href="{{ route('admin.roles.index') }}">
+                <x-sidebar-nav-link :href="route('admin.roles.index')" :active="request()->routeIs('admin.roles.index')">
                     Roles
                 </x-sidebar-nav-link>
 
-                <x-sidebar-nav-link href="{{ route('admin.permissions.index') }}">
+                <x-sidebar-nav-link :href="route('admin.permissions.index')" :active="request()->routeIs('admin.permissions.index')">
                     Permisos
                 </x-sidebar-nav-link>
 
