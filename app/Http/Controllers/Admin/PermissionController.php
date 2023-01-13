@@ -26,7 +26,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.permissions.create');
     }
 
     /**
@@ -37,7 +37,16 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            "permission" => "required|string|min:3|unique:roles,name"
+        ]);
+
+        $data = $data["permission"];
+        Permission::create(["name" => $data]);
+
+        return to_route('admin.permissions.index')->with('alert', [
+            'message' => "Se agregó el rol $data"
+        ]);
     }
 
     /**

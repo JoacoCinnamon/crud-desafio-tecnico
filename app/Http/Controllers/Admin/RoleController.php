@@ -26,7 +26,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.roles.create');
     }
 
     /**
@@ -37,7 +37,15 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            "role" => "required|string|min:3|unique:roles,name"
+        ]);
+
+        Role::create(["name" => $data]);
+
+        return redirect()->route('admin.roles.index')->with('alert', [
+            'message' => "Se agregó el rol $data"
+        ]);
     }
 
     /**
