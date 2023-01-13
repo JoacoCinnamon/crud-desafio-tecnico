@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
@@ -38,13 +40,13 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            "role" => "required|string|min:3|unique:roles,name"
+            "name" => "required|string|min:3|unique:roles,name"
         ]);
 
-        Role::create(["name" => $data]);
+        $role = Role::create($data);
 
         return redirect()->route('admin.roles.index')->with('alert', [
-            'message' => "Se agregó el rol $data"
+            'message' => "Se agregó el rol $role->name"
         ]);
     }
 
@@ -69,13 +71,15 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, Role $role)
     {
+        //$permissions = Permission::all();
+
         $user = $request->user();
 
-        if (!$user->isAdmin() && $id == 1) {
-            abort(403);
-        }
+        abort_if(!$user->isAdmin() && $role->id == 1, code: 403);
+
+        return view('admin.roles.edit', compact('role'));
     }
 
     /**
@@ -85,13 +89,28 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
         $user = $request->user();
 
-        if (!$user->isAdmin() && $id == 1) {
+        if (!$user->isAdmin() && $role->id == 1) {
             abort(403);
         }
+
+        $data = $request->validate([
+            "name" => [
+                "required",
+                "string",
+                "min:3",
+                Rule::unique('roles', 'name')->ignore($role)
+            ]
+        ]);
+
+        $role->update($data);
+
+        return redirect()->route('admin.roles.index')->with('alert', [
+            'message' => "Se ha editado el rol $role->name "
+        ]);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
@@ -38,14 +39,13 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            "permission" => "required|string|min:3|unique:roles,name"
+            "name" => "required|string|min:3|unique:permissions,name"
         ]);
 
-        $data = $data["permission"];
-        Permission::create(["name" => $data]);
+        $permission = Permission::create($data);
 
         return to_route('admin.permissions.index')->with('alert', [
-            'message' => "Se agregó el rol $data"
+            'message' => "Se agregó el permiso $permission->name"
         ]);
     }
 
@@ -66,9 +66,9 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, Permission $permission)
     {
-        //
+        return view('admin.permissions.edit', compact('permission'));
     }
 
     /**
@@ -78,9 +78,22 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Permission $permission)
     {
-        //
+        $data = $request->validate([
+            "name" => [
+                "required",
+                "string",
+                "min:3",
+                Rule::unique('permissions', 'name')->ignore($permission)
+            ]
+        ]);
+
+        $permission->update($data);
+
+        return to_route('admin.permissions.index')->with('alert', [
+            'message' => "Se editó el permiso $permission->name"
+        ]);
     }
 
     /**
