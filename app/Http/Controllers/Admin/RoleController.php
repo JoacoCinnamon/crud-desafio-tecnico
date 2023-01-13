@@ -17,7 +17,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::whereNotIn('name', ['admin'])->get();
+        $roles = Role::whereNotIn('name', ['admin'])->paginate(14);
         return view('admin.roles.index', compact('roles'));
     }
 
@@ -73,13 +73,12 @@ class RoleController extends Controller
      */
     public function edit(Request $request, Role $role)
     {
-        //$permissions = Permission::all();
-
+        $permissions = Permission::all();
         $user = $request->user();
 
         abort_if(!$user->isAdmin() && $role->id == 1, code: 403);
 
-        return view('admin.roles.edit', compact('role'));
+        return view('admin.roles.edit', compact('role', 'permissions'));
     }
 
     /**
@@ -132,5 +131,33 @@ class RoleController extends Controller
         return back()->with('alert', [
             'message' => "Se ha eliminado el rol $role->name "
         ]);
+    }
+
+    public function assignPermission(Request $request, Role $role)
+    {
+        $request->validate([
+            "permission" => "min:0|not_in:0"
+        ]);
+
+        $permission = $request->permission;
+
+        if ($role->hasPermissionTo($permission)) {
+            return back()
+                ->withInput()
+                ->withErrors(['email.not_in', 'El rol ya existe']);
+        }
+
+        $role->givePermissionTo($permission);
+
+        return back()->with('alert', ['message' => "Se agregó el permiso $permission al rol"]);
+    }
+
+    public function revokePermission(Role $role, Permission $permission)
+    {
+        if ($role->hasPermissionTo($permission)) {
+            $role->revokePermissionTo($permission);
+            return back()->with('alert', ['message' => "Se ha eliminado el permiso $permission->name del rol"]);
+        }
+        return back()->with('alert', ['message' => 'El rol ya tiene ese permiso']);
     }
 }

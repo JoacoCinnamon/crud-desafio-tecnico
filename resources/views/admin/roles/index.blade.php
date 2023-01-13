@@ -62,6 +62,7 @@
                                         </td>
                                     </tr>
                     @endforelse
+                    {{ $roles->links() }}
                     </tbody>
                     </table>
                 </div>

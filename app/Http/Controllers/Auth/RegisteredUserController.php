@@ -42,8 +42,8 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Cuando un usuario se registra debe tener el rol "user" predeterminado
-        $user->syncRoles('user');
+        // Con esto podríamos forzar a que todos los usuarios empiecen con el rol de usuarios
+        // $user->syncRoles('user');
 
 
         event(new Registered($user));
