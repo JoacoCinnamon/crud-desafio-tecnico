@@ -19,6 +19,10 @@
 
     @include('layouts.sidebar')
 
+    {{-- @if ($alert = session()->get('alert'))
+        <x-alert :message="$alert['message']" />
+    @endif --}}
+
     <!-- Page Content -->
     <main class="flex w-full">
         {{ $slot }}
