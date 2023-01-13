@@ -28,6 +28,8 @@ class PermissionController extends Controller
      */
     public function create()
     {
+        // Para prevenir que se creen permisos que quizás sean dañinos no habría que dejar que
+        // 1- Se puedan crear nuevos así por que si sin ninguna validación previa
         return view('admin.permissions.create');
     }
 
@@ -39,6 +41,9 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        // Para prevenir que se creen permisos que quizás sean dañinos no habría que dejar que
+        // 1- Se puedan crear nuevos así por que si sin ninguna validación previa
+
         $data = $request->validate([
             "name" => "required|string|min:3|unique:permissions,name"
         ]);
