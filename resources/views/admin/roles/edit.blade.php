@@ -18,7 +18,7 @@
             </form>
             <div class="mt-6 p-2">
                 <h2 class="text-2xl font-semibold dark:text-white">Permisos del rol</h2>
-                <div class="flex space-x-2 mt-4 p-2">
+                <div class="flex mt-4">
                     @forelse($role->permissions as $rolePermission)
                         <form class="px-4 py-2 text-white rounded-md" method="POST"
                             action="{{ route('admin.roles.permissions.revoke', [$role->id, $rolePermission->id]) }}"
