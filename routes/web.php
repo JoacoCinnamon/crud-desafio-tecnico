@@ -35,9 +35,11 @@ Route::middleware(['role:admin'])->name('admin.')->prefix('admin')->group(functi
     Route::get('/', fn () => view('admin.index'))->name('index');
     Route::resource('/roles', RoleController::class);
     Route::post('/roles/{role}/permissions', [RoleController::class, 'assignPermission'])->name('roles.permissions');
-    Route::delete('/roles/{role}/permission/{permission}', [RoleController::class, 'revokePermission'])
+    Route::delete('/roles/{role}/permissions/{permission}', [RoleController::class, 'revokePermission'])
         ->name('roles.permissions.revoke');
     Route::resource('/permissions', PermissionController::class);
+    Route::delete('permissions/{permission}/roles/{role}', [PermissionController::class, 'removeRole'])
+        ->name('permissions.roles.remove');
 });
 
 require __DIR__ . '/auth.php';

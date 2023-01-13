@@ -144,7 +144,7 @@ class RoleController extends Controller
         if ($role->hasPermissionTo($permission)) {
             return back()
                 ->withInput()
-                ->withErrors(['email.not_in', 'El rol ya existe']);
+                ->withErrors(['permission' => 'El rol ya tiene ese permiso']);
         }
 
         $role->givePermissionTo($permission);
@@ -158,6 +158,8 @@ class RoleController extends Controller
             $role->revokePermissionTo($permission);
             return back()->with('alert', ['message' => "Se ha eliminado el permiso $permission->name del rol"]);
         }
-        return back()->with('alert', ['message' => 'El rol ya tiene ese permiso']);
+        return back()
+            ->withInput()
+            ->withErrors(['permission' => 'El rol no tiene ese permiso']);
     }
 }

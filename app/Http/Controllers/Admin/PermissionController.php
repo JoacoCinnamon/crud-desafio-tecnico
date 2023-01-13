@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PermissionController extends Controller
 {
@@ -109,5 +110,17 @@ class PermissionController extends Controller
         return back()->with('alert', [
             'message' => "Se ha eliminado el permiso $permission->name "
         ]);
+    }
+
+    public function removeRole(Permission $permission, Role $role)
+    {
+        if ($permission->hasRole($role)) {
+            $permission->removeRole($role);
+            return back()->with("message', 'Se ha removido el rol $role->name.");
+        }
+
+        return back()
+            ->withInput()
+            ->withErrors(['role' => 'El permiso no tiene ese rol']);
     }
 }

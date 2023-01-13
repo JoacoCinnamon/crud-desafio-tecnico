@@ -7,6 +7,7 @@
                 <x-input-label for="name" :value="__('Rol')" />
                 <x-text-input id="name" class="block mt-2 w-full" type="text" name="name" :value="old($role->name) ?? $role->name"
                     required autofocus />
+
                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
 
                 <div class="sm:col-span-6">
