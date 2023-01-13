@@ -102,8 +102,12 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Permission $permission)
     {
-        //
+        $permission->delete();
+
+        return back()->with('alert', [
+            'message' => "Se ha eliminado el permiso $permission->name "
+        ]);
     }
 }

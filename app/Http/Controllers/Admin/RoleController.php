@@ -119,12 +119,18 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, Role $role)
     {
         $user = $request->user();
 
-        if (!$user->isAdmin() && $id == 1) {
+        if ($role->id == 1) {
             abort(403);
         }
+
+        $role->delete();
+
+        return back()->with('alert', [
+            'message' => "Se ha eliminado el rol $role->name "
+        ]);
     }
 }
