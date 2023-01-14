@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Permission;
@@ -10,6 +11,8 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+    protected const ADMIN = 1;
+
     /**
      * Display a listing of the resource.
      *
@@ -56,14 +59,10 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Role $role)
+    public function show(User $user, Role $role)
     {
-        $user = $request->user();
-
-        if (!$user->isAdmin() && $role->id == 1) {
-            abort(403);
-        }
-
+        // Si quieren ver el rol de admin
+        abort_if($role->id == self::ADMIN && $user->isAdmin(), 404);
         return view('admin.roles.show', compact('role'));
     }
 
@@ -73,12 +72,12 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, Role $role)
+    public function edit(Role $role)
     {
-        $permissions = Permission::all();
-        $user = $request->user();
+        // Si quieren editar el rol de admin
+        abort_if($role->id == self::ADMIN, 404);
 
-        abort_if(!$user->isAdmin() && $role->id == 1, code: 403);
+        $permissions = Permission::all();
 
         return view('admin.roles.edit', compact('role', 'permissions'));
     }
@@ -92,10 +91,9 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        $user = $request->user();
-
-        if (!$user->isAdmin() && $role->id == 1) {
-            abort(403);
+        // Si quieren editar el rol de admin
+        if ($role->id == self::ADMIN) {
+            abort(404);
         }
 
         $data = $request->validate([
@@ -120,12 +118,11 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Role $role)
+    public function destroy(Role $role)
     {
-        $user = $request->user();
-
+        // Si quieren borrar el rol de admin
         if ($role->id == 1) {
-            abort(403);
+            abort(404);
         }
 
         $role->delete();
