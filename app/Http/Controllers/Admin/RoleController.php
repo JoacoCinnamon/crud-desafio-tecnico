@@ -49,7 +49,7 @@ class RoleController extends Controller
 
         $role = Role::create($data);
 
-        return redirect()->route('admin.roles.index')->with('alert', [
+        return to_route('admin.roles.index')->with('alert', [
             'message' => "Se agregó el rol $role->name"
         ]);
     }
@@ -60,10 +60,10 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user, Role $role)
+    public function show(Role $role)
     {
         // Si quieren ver el rol de admin
-        abort_if($role->id == self::ADMIN && $user->isAdmin(), 404);
+        abort_if($role->id == self::ADMIN && !auth()->user()->isAdmin(), 403);
         return view('admin.roles.show', compact('role'));
     }
 
@@ -76,7 +76,7 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         // Si quieren editar el rol de admin
-        abort_if($role->id == self::ADMIN, 404);
+        abort_if($role->id == self::ADMIN, 403);
 
         $permissions = Permission::all();
 
@@ -93,7 +93,7 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         // Si quieren editar el rol de admin
-        abort_if($role->id == self::ADMIN, 404);
+        abort_if($role->id == self::ADMIN, 403);
 
         $data = $request->validate([
             "name" => [
@@ -106,7 +106,7 @@ class RoleController extends Controller
 
         $role->update($data);
 
-        return redirect()->route('admin.roles.index')->with('alert', [
+        return to_route('admin.roles.index')->with('alert', [
             'message' => "Se ha editado el rol $role->name "
         ]);
     }
@@ -120,7 +120,7 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         // Si quieren borrar el rol de admin
-        abort_if($role->id == self::ADMIN, 404);
+        abort_if($role->id == self::ADMIN, 403);
 
 
         $role->delete();
