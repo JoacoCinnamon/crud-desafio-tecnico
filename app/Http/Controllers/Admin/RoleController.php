@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Spatie\FlareClient\Http\Exceptions\NotFound;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -92,9 +93,7 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         // Si quieren editar el rol de admin
-        if ($role->id == self::ADMIN) {
-            abort(404);
-        }
+        abort_if($role->id == self::ADMIN, 404);
 
         $data = $request->validate([
             "name" => [
@@ -121,9 +120,8 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         // Si quieren borrar el rol de admin
-        if ($role->id == 1) {
-            abort(404);
-        }
+        abort_if($role->id == self::ADMIN, 404);
+
 
         $role->delete();
 

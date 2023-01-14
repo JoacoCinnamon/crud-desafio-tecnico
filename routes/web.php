@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// UnauthorizedException ahora tira 404 y no 403 
+// UnauthorizedException ahora tira 404 y no 403, si está mal pero damos menos información
 Route::middleware(['role:admin'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/', fn () => view('admin.index'))->name('index');
     Route::resource('/roles', RoleController::class);
