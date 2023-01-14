@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +31,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+// UnauthorizedException ahora tira 404 y no 403, si está mal pero damos menos información
+Route::middleware(['role:admin'])->name('admin.')->prefix('admin')->group(function () {
+    Route::get('/', fn () => view('admin.index'))->name('index');
+    Route::resource('/roles', RoleController::class);
+    Route::post('/roles/{role}/permissions', [RoleController::class, 'assignPermission'])->name('roles.permissions');
+    Route::delete('/roles/{role}/permissions/{permission}', [RoleController::class, 'revokePermission'])
+        ->name('roles.permissions.revoke');
+    Route::resource('/permissions', PermissionController::class);
+    Route::delete('permissions/{permission}/roles/{role}', [PermissionController::class, 'removeRole'])
+        ->name('permissions.roles.remove');
+    Route::resource('/users', UserController::class);
+    Route::post('/users/{user}/roles', [UserController::class, 'assignRole'])->name('users.roles');
+    Route::delete('/users/{user}/roles/{role}', [UserController::class, 'removeRole'])->name('users.roles.remove');
+});
+
+require __DIR__ . '/auth.php';
