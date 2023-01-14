@@ -18,7 +18,8 @@ Requerimientos
 
 ## Paquetes Extras
 
-- [Laravel Breeze](https://github.com/laravel/breeze)
+- [Laravel Breeze](https://github.com/laravel/breeze) para la autenticación.
+- [Spatie/laravel-permission](https://github.com/spatie/laravel-permission) para la gestión de roles y permisos.
 
 ## License
 
