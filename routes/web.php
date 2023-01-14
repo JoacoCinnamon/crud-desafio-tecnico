@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,9 @@ Route::middleware(['role:admin'])->name('admin.')->prefix('admin')->group(functi
     Route::resource('/permissions', PermissionController::class);
     Route::delete('permissions/{permission}/roles/{role}', [PermissionController::class, 'removeRole'])
         ->name('permissions.roles.remove');
+    Route::resource('/users', UserController::class);
+    Route::post('/users/{user}/roles', [UserController::class, 'assignRole'])->name('users.roles');
+    Route::delete('/users/{user}/roles/{role}', [UserController::class, 'removeRole'])->name('users.roles.remove');
 });
 
 require __DIR__ . '/auth.php';

@@ -34,7 +34,7 @@
                     Permisos
                 </x-sidebar-nav-link>
 
-                <x-sidebar-nav-link>
+                <x-sidebar-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
                     Usuarios
                 </x-sidebar-nav-link>
 

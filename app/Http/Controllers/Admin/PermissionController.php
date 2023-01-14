@@ -121,7 +121,7 @@ class PermissionController extends Controller
     {
         if ($permission->hasRole($role)) {
             $permission->removeRole($role);
-            return back()->with("message', 'Se ha removido el rol $role->name.");
+            return back()->with('alert', ['message' => "Se ha removiddo el rol $role"]);
         }
 
         return back()
