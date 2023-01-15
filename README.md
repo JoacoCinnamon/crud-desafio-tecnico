@@ -11,15 +11,34 @@
 
 Requerimientos
 
-- Crear un CRUD de Usuarios.
-- Crear un CRUD de Roles.
-- Crear un CRUD para poder asignarle roles a un usuario en particular.
+- Crear un CRUD de Usuarios ✔
+- Crear un CRUD de Roles ✔
+- Crear un CRUD para poder asignarle roles a un usuario en particular ✔
 
 
 ## Paquetes Extras
 
 - [Laravel Breeze](https://github.com/laravel/breeze) para la autenticación.
 - [Spatie/laravel-permission](https://github.com/spatie/laravel-permission) para la gestión de roles y permisos.
+
+## Instalación
+- Clonarse este repositorio 
+```bash
+git clone https://github.com/JoacoCinnamon/crud-desafio-tecnico.git
+
+```
+- Entrar a la carpeta del repositorio
+- Modificar/crear y escribir el archivo `.env`
+- Instalar todas las dependencias de composer y node 
+```bash
+composer install && npm install
+```
+--
+- Para levantar el servidor correr 
+``` bash
+php artisan serve 
+npm run dev
+```
 
 ## License
 
